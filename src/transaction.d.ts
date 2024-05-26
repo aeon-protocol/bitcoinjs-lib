@@ -46,6 +46,7 @@ export declare class Transaction {
      */
     hashForSignature(inIndex: number, prevOutScript: Buffer, hashType: number): Buffer;
     hashForWitnessV1(inIndex: number, prevOutScripts: Buffer[], values: number[], hashType: number, leafHash?: Buffer, annex?: Buffer): Buffer;
+    prepareForWitnessV0(inIndex: number, prevOutScript: Buffer, value: number, hashType: number): Buffer;
     hashForWitnessV0(inIndex: number, prevOutScript: Buffer, value: number, hashType: number): Buffer;
     getHash(forWitness?: boolean): Buffer;
     getId(): string;

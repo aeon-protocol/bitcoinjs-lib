@@ -494,7 +494,7 @@ export class Transaction {
     );
   }
 
-  hashForWitnessV0(
+  prepareForWitnessV0(
     inIndex: number,
     prevOutScript: Buffer,
     value: number,
@@ -585,7 +585,20 @@ export class Transaction {
     bufferWriter.writeSlice(hashOutputs);
     bufferWriter.writeUInt32(this.locktime);
     bufferWriter.writeUInt32(hashType);
-    return bcrypto.hash256(tbuffer);
+    return tbuffer;
+  }
+  hashForWitnessV0(
+    inIndex: number,
+    prevOutScript: Buffer,
+    value: number,
+    hashType: number,
+  ): Buffer {
+    return bcrypto.hash256(this.prepareForWitnessV0(
+      inIndex,
+      prevOutScript,
+      value,
+      hashType,
+    ));
   }
 
   getHash(forWitness?: boolean): Buffer {

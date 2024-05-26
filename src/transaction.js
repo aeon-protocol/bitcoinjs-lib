@@ -465,9 +465,10 @@ class Transaction {
     return tbuffer;
   }
   hashForWitnessV0(inIndex, prevOutScript, value, hashType) {
-    return bcrypto.hash256(this.hashForWitnessV0(inIndex, prevOutScript, value, hashType));
+    return bcrypto.hash256(
+      this.prepareForWitnessV0(inIndex, prevOutScript, value, hashType),
+    );
   }
-
   getHash(forWitness) {
     // wtxid for coinbase is always 32 bytes of 0x00
     if (forWitness && this.isCoinbase()) return Buffer.alloc(32, 0);

@@ -392,7 +392,7 @@ class Transaction {
       Buffer.concat([Buffer.from([0x00]), sigMsgWriter.end()]),
     );
   }
-  hashForWitnessV0(inIndex, prevOutScript, value, hashType) {
+  prepareForWitnessV0(inIndex, prevOutScript, value, hashType) {
     typeforce(
       types.tuple(types.UInt32, types.Buffer, types.Satoshi, types.UInt32),
       arguments,
@@ -462,8 +462,12 @@ class Transaction {
     bufferWriter.writeSlice(hashOutputs);
     bufferWriter.writeUInt32(this.locktime);
     bufferWriter.writeUInt32(hashType);
-    return bcrypto.hash256(tbuffer);
+    return tbuffer;
   }
+  hashForWitnessV0(inIndex, prevOutScript, value, hashType) {
+    return bcrypto.hash256(this.hashForWitnessV0(inIndex, prevOutScript, value, hashType));
+  }
+
   getHash(forWitness) {
     // wtxid for coinbase is always 32 bytes of 0x00
     if (forWitness && this.isCoinbase()) return Buffer.alloc(32, 0);
